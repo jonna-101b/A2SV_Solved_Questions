@@ -7,7 +7,7 @@ if __name__ == "__main__":
         
         for __ in range(n):
             l, r, real = [ int(num) for num in input().strip().split() ]
-            casinos.append((l, real, r))
+            casinos.append((l, r, real))
 
         casinos.sort(key = lambda x: x[0])
         
