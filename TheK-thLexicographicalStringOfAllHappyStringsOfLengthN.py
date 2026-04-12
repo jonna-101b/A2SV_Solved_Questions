@@ -1,24 +1,34 @@
+from typing import List
+
 class Solution:
     def getHappyString(self, n: int, k: int) -> str:
-        res=""
-        count=0
-        total=3*(2**(n-1))
+        letters = ["a", "b", "c"]
+        res = ""
+        count = 0
 
-        def dfs(curset):
-            nonlocal count
+        def find(index: int = 0, path: List = []):
             nonlocal res
-            
-            if len(curset)==n:
-                count+=1
-                if count==k:
-                    res+="".join(curset)
+            nonlocal count
+
+            if len(path) == n:
+                count += 1
+                if not res and count == k:
+                    res = "".join(path)
+                
                 return 
+
+            for i in range(len(letters)):
+                if path and i == index:
+                    continue
+
+                path.append(letters[i])
+                find(i, path)
+                path.pop()
+
+                if res:
+                    return
             
-            for ch in "abc":
-                if not curset or curset[-1]!=ch:
-                    curset.append(ch)
-                    dfs(curset)
-                    curset.pop()
-        if total<k: return ""
-        dfs([])
+            return
+        
+        find()
         return res
