@@ -1,0 +1,30 @@
+class Solution:
+    def kthSmallest(self, matrix, k):
+        n = len(matrix)
+
+        def count_less_equal(x):
+            count = 0
+            row = n - 1
+            col = 0
+
+            while row >= 0 and col < n:
+                if matrix[row][col] <= x:
+                    count += row + 1
+                    col += 1
+                else:
+                    row -= 1
+
+            return count
+
+        left = matrix[0][0]
+        right = matrix[n - 1][n - 1]
+
+        while left < right:
+            mid = (left + right) // 2
+
+            if count_less_equal(mid) < k:
+                left = mid + 1
+            else:
+                right = mid
+
+        return left
