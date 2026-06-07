@@ -1,0 +1,28 @@
+from collections import defaultdict, deque
+
+class Solution:
+    def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
+        graph = defaultdict(list)
+        indegree = [0] * (n + 1)
+        for u, v in relations:
+            graph[u].append(v)
+            indegree[v] += 1
+        dist = [0] * (n + 1)
+
+        q = deque()
+        for i in range(1, n + 1):
+            if indegree[i] == 0:
+                q.append(i)
+                dist[i] = time[i - 1]
+        while q:
+            node = q.popleft()
+
+            for nei in graph[node]:
+                dist[nei] = max(dist[nei], dist[node] + time[nei - 1])
+
+                indegree[nei] -= 1
+
+                if indegree[nei] == 0:
+                    q.append(nei)
+
+        return max(dist)
